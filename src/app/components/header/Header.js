@@ -3,7 +3,7 @@ import { faBoxOpen } from '@fortawesome/free-solid-svg-icons';
 
 export default function Header () {
     return (
-        <header className="container-fluid py-3"
+        <header className="d-flex p-3 align-items-center"
             style={{background: "linear-gradient(63deg, rgba(83,230,75,0.7483368347338936) 0%, rgba(5,242,219,1) 100%", flexBasis:"10vh"}}
         >
             <div className="d-flex align-items-center">

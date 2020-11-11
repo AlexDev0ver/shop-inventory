@@ -8,14 +8,12 @@ export function setItems(payload) {
     return {type: ACTION.SET_ITEMS, payload}
 };
 
-export const dispatchItems = (items) => dispatch => {
-    dispatch(setItems(items));
-
+export function updateLocalStorage (items) {
     localStorage.removeItem("items");
     localStorage.setItem("items", JSON.stringify(items));
 }
 
-export const getItems = () => dispatch => {
+export const getItems = () => async (dispatch, getState) => {
     dispatch(toggleItemsFakeFetching(true));
 
     if (localStorage.getItem("items") === null) {
@@ -25,9 +23,9 @@ export const getItems = () => dispatch => {
     }
 
     setTimeout(() => {
-        if (localStorage.getItem("items").items) {
+        if (localStorage.getItem("items").length) {
             dispatch(setItems(
-                JSON.parse(localStorage.getItem("items").items)
+                JSON.parse(localStorage.getItem("items"))
             ));
         }
 
@@ -37,30 +35,28 @@ export const getItems = () => dispatch => {
 
 
 
-export const createItem = (name, quantity) => async(dispatch, getState) => {
-    const items = getState().items;
+export const createItem = ({name, quantity}) => async(dispatch, getState) => {
+    if (name === "" || quantity === 0) return;
 
-    const updatedItems = [...items, {name: name, quantity: quantity, id: Math.floor(Math.random()*1000)}];
-    dispatchItems(updatedItems);
+    const items = getState().products.items;
+    const updatedItems = [...items, {name: name, quantity: quantity, id: Math.floor(Math.random()*1000)} ];
+
+    dispatch(setItems(updatedItems));
+    updateLocalStorage(updatedItems);
 }
 
 export const editItem = (updatedItem) => async(dispatch, getState) => {
-    const items = getState().items;
-
+    const items = getState().products.items;
     const updatedItems = items.map(i => i.id === updatedItem.id ? updatedItem : i);
-    dispatchItems(updatedItems);
+
+    dispatch(setItems(updatedItems));
+    updateLocalStorage(updatedItems);
 }
 
 export const deleteItem = (item) => async(dispatch, getState) => {
-    const items = getState().items;
-
+    const items = getState().products.items;
     const updatedItems = items.filter(i => i.id !== item.id);
-    dispatchItems(updatedItems);
-}
 
-export const searchItem = (name) => async(dispatch, getState) => {
-    const items = getState().items;
-
-    const filteredItems = items.filter(i => i.name.toLowerCase().includes === name);
-    dispatchItems(filteredItems);
+    dispatch(setItems(updatedItems));
+    updateLocalStorage(updatedItems);
 }
