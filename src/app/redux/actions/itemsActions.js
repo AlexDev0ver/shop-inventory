@@ -14,7 +14,7 @@ export function updateLocalStorage (items) {
 }
 
 export const getItems = () => async (dispatch, getState) => {
-    dispatch(toggleItemsFakeFetching(true));
+    if (!getState().products.items.length) dispatch(toggleItemsFakeFetching(true));
 
     if (localStorage.getItem("items") === null) {
         localStorage.setItem("items", "[]");

@@ -5,7 +5,7 @@ import { Preloader, Oval } from 'react-preloader-icon';
 import { getItems, createItem } from '../../redux/actions';
 
 import Modal from '../../utilities/Modal';
-import ItemView from './item-view/ItemView';
+import ListItem from './list-item/ListItem';
 
 class ProductsContainer extends Component {
 
@@ -48,25 +48,24 @@ class ProductsContainer extends Component {
                 }
 
                 {!itemsFakeFetching &&
-                    <div className="d-flex flex-column my-5" style={{marginLeft:"15%", marginRight:"15%"}}>
+                    <div className="d-flex flex-column my-5 col-12 offset-sm-2 col-sm-8">
                         <div className="d-flex justify-content-around py-2 align-items-center border-bottom">
-                            <span>{items.length ? `You have ${items.length} goods` : "Oh, here so empty... add something!"}</span>
+                            <span>{items.length ? `You have ${items.length} items in inventory` : "Oh, here so empty... add something!"}</span>
                             <Modal setItem={this.props.createItem} editOrCreate="create"/>
                         </div>
-                        <ul className = "d-flex flex-column my-4 p-4" style={{listStyle:"none"}}>
+                        <ul className = "d-flex flex-column my-4 p-4 overflow-auto" style={{listStyle:"none", maxHeight:"300px"}}>
                             {!searching && this.props.products.items.map(i =>
                                 <li key={`product-list-item-${i.id}`} className="border-bottom pt-2 pl-3 text-end">
-                                    <ItemView key={`product-item-${i.id}`} item={i}/>
+                                    <ListItem key={`product-item-${i.id}`} item={i}/>
                                 </li>)}
                             {searching && this.props.products.items.filter(i => i.name.toLowerCase().includes(searchValue)).map(i =>
                                 <li key={`product-list-item-${i.id}`} className="border-bottom pt-2 pl-3 text-end">
-                                    <ItemView key={`product-item-${i.id}`} item={i}/>
+                                    <ListItem key={`product-item-${i.id}`} item={i}/>
                                 </li>)}
                         </ul>
                         <input placeholder={items.length ? "Type to search here..." : "Nothing to search, sadly..."}
-                               className="form-control flex-end align-self-center"
-                               style={{maxWidth:"300px"}}
-                               onChange={(e) => this.searchItems(e.target.value)}
+                               className="form-control flex-end align-self-center col-8 col-sm-4"
+                               onChange={(e) => this.searchItems(e.target.value.toLowerCase())}
                         />
                     </div>
                 }
@@ -77,7 +76,8 @@ class ProductsContainer extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        products: state.products
+        products: state.products,
+        item: state.common.chosenItem
     }
 }
 

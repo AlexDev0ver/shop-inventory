@@ -26,10 +26,12 @@ export default function Modal({setItem, editOrCreate, item}) {
 
   const onSetItem = () => {
       if (name === "" || quantity <= 0 ) return;
+
       if (!item) {
           setItem({name: name, quantity: quantity});
           handleClose();
       }
+
       if (item) {
           setItem({...item, name: name, quantity: quantity});
           handleClose();
@@ -39,7 +41,7 @@ export default function Modal({setItem, editOrCreate, item}) {
 
   return (
     <div>
-        {editOrCreate=== "create" &&
+        {editOrCreate === "create" &&
             <button
                 onClick={handleClickOpen}
                 style={{height: "25px",
@@ -51,7 +53,7 @@ export default function Modal({setItem, editOrCreate, item}) {
                     outline:"none"}}> <FontAwesomeIcon icon={faPlus}/>
             </button>
         }
-        {editOrCreate=== "edit" &&
+        {editOrCreate === "edit" &&
             <button
                 onClick={handleClickOpen}
                 style={{height: "25px",
@@ -64,35 +66,41 @@ export default function Modal({setItem, editOrCreate, item}) {
             </button>
         }
         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-            <DialogTitle id="form-dialog-title">{editOrCreate==="create" ? "Create new item?" : "Edit this item?"}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        Set name and desirible quantity in requared field.
-                    </DialogContentText>
-                    <TextField
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        color={name === "" ? "secondary" : "primary"}
-                        autoFocus
-                        defaultValue={item ? item.name : ""}
-                        margin="dense"
-                        required={true}
-                        id="name"
-                        label="Name"
-                        type="text"
-                        fullWidth
-                    />
-                    <TextField
-                        value={quantity}
-                        color={quantity <= 0 ? "secondary" : "primary"}
-                        onChange={(e) => setQuantity(e.target.value)}
-                        margin="dense"
-                        id="quantity"
-                        label="Quantity"
-                        type="number"
-                        fullWidth
-                    />
-            </DialogContent>
+
+            <DialogTitle id="form-dialog-title">
+                {editOrCreate === "create" ? "Create new item?" : "Edit this item?"}
+            </DialogTitle>
+
+            <DialogContent>
+                <DialogContentText>
+                    Set name and desirable quantity in requared field.
+                </DialogContentText>
+
+                <TextField
+                    value={name}
+                    defaultValue={item && Object.keys(item).length ? item.name : name}
+                    onChange={(e) => setName(e.target.value)}
+                    color={name === "" ? "secondary" : "primary"}
+                    autoFocus
+                    margin="dense"
+                    required={true}
+                    id="name"
+                    label="Name"
+                    type="text"
+                    fullWidth
+                />
+                <TextField
+                    value={quantity}
+                    defaultValue={item && Object.keys(item).length ? item.quantity : quantity}
+                    color={quantity <= 0 ? "secondary" : "primary"}
+                    onChange={(e) => setQuantity(e.target.value)}
+                    margin="dense"
+                    id="quantity"
+                    label="Quantity"
+                    type="number"
+                    fullWidth
+                />
+        </DialogContent>
 
             <DialogActions>
                 <Button onClick={handleClose} color="secondary">

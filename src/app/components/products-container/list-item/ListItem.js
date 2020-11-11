@@ -1,23 +1,27 @@
 import React, { Component } from 'react';
+import { Link } from "react-router-dom";
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimesCircle } from '@fortawesome/free-regular-svg-icons';
 
-import { editItem, deleteItem } from '../../../redux/actions';
+import { editItem, deleteItem, chooseItemId } from '../../../redux/actions';
 import Modal from '../../../utilities/Modal';
 
-class ItemView extends Component {
-    constructor(props: Props) {
-        super(props);
+class ListItem extends Component {
+
+    chooseItem(item) {
+        this.props.chooseItemId(item.id);
     }
 
     render() {
-        const {item} = this.props;
+        const { item } = this.props;
 
         return(
             <div className="d-flex justify-content-around wrap align-items-center">
-                <div className="mx-2" style={{width:"100px"}}>
-                    <span>{item.name}</span>
+                <div className="mx-2" style={{width:"100px", cursor:"pointer"}} onClick={() => this.chooseItem(item)}>
+                    <Link to="/item" style={{textDecoration:"none", color:"#2c3033"}}>
+                        <span>{item.name}</span>
+                    </Link>
                 </div>
                 <div className="mx-2" style={{width:"70px"}}>
                     <span style={{wordWrap:"break-word"}}>{item.quantity}</span>
@@ -40,4 +44,4 @@ class ItemView extends Component {
 
 }
 
-export default connect(null, { editItem, deleteItem })(ItemView);
+export default connect(null, { editItem, deleteItem, chooseItemId })(ListItem);
