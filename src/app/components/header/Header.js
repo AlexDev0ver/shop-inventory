@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBoxOpen } from '@fortawesome/free-solid-svg-icons';
 
@@ -8,7 +9,9 @@ export default function Header () {
         >
             <div className="d-flex align-items-center">
                 <FontAwesomeIcon size="lg" style={{color:"#e77f0f"}} icon={ faBoxOpen }/>
-                <h1 style={{fontSize: "20px", fontWeight:700, marginLeft:"10px"}}>You're Shop Inventory</h1>
+                <h1 style={{fontSize: "20px", fontWeight:700, marginLeft:"10px"}}>
+                    <Link to="/product" style={{textDecoration:"none", color:"#2c3033"}}>You're Shop Inventory</Link>
+                </h1>
             </div>
         </header>
     )

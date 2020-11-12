@@ -35,11 +35,11 @@ export const getItems = () => async (dispatch, getState) => {
 
 
 
-export const createItem = ({name, quantity}) => async(dispatch, getState) => {
+export const createItem = ({name, quantity, description = null}) => async(dispatch, getState) => {
     if (name === "" || quantity === 0) return;
 
     const items = getState().products.items;
-    const updatedItems = [...items, {name: name, quantity: quantity, id: Math.floor(Math.random()*1000)} ];
+    const updatedItems = [...items, {name: name, quantity: quantity, description: description, id: Math.floor(Math.random()*1000)} ];
 
     dispatch(setItems(updatedItems));
     updateLocalStorage(updatedItems);

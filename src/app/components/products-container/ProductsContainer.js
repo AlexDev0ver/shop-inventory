@@ -63,7 +63,8 @@ class ProductsContainer extends Component {
                                     <ListItem key={`product-item-${i.id}`} item={i}/>
                                 </li>)}
                         </ul>
-                        <input placeholder={items.length ? "Type to search here..." : "Nothing to search, sadly..."}
+                        <input style={{maxHeight:"40px"}} 
+                               placeholder={items.length ? "Type to search here..." : "Nothing to search, sadly..."}
                                className="form-control flex-end align-self-center col-8 col-sm-4"
                                onChange={(e) => this.searchItems(e.target.value.toLowerCase())}
                         />

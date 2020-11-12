@@ -46,6 +46,9 @@ export default function Modal({setItem, editOrCreate, item}) {
                 onClick={handleClickOpen}
                 style={{height: "25px",
                     width:"26px",
+                    display:"flex",
+                    alignItems:"center",
+                    justifyContent:"center",
                     borderRadius:"50%",
                     backgroundColor:"#2fa129",
                     color:"#fff",
@@ -58,6 +61,9 @@ export default function Modal({setItem, editOrCreate, item}) {
                 onClick={handleClickOpen}
                 style={{height: "25px",
                     width:"26px",
+                    display:"flex",
+                    alignItems:"center",
+                    justifyContent:"center",
                     borderRadius:"50%",
                     backgroundColor:"#2fa129",
                     color:"#fff",
