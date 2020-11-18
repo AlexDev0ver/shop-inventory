@@ -1,3 +1,4 @@
+// @flow
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
@@ -7,7 +8,23 @@ import { getItems, createItem } from '../../redux/actions';
 import Modal from '../../utilities/Modal';
 import ListItem from './list-item/ListItem';
 
-class ProductsContainer extends Component {
+import type { ProductsType } from '../../types/ProductsType';
+import type { ItemType } from '../../types/ItemType';
+import type { AppStateType } from '../../types/AppStateType';
+
+type State = {
+    searching: boolean,
+    searchValue: string
+}
+
+type Props = {
+    getItems: () => void,
+    createItem: () => void,
+    itemsFakeFetching: boolean,
+    products: ProductsType
+}
+
+class ProductsContainer extends Component<Props, State> {
 
     state = {
         searching: false,
@@ -63,7 +80,7 @@ class ProductsContainer extends Component {
                                     <ListItem key={`product-item-${i.id}`} item={i}/>
                                 </li>)}
                         </ul>
-                        <input style={{maxHeight:"40px"}} 
+                        <input style={{maxHeight:"40px"}}
                                placeholder={items.length ? "Type to search here..." : "Nothing to search, sadly..."}
                                className="form-control flex-end align-self-center col-8 col-sm-4"
                                onChange={(e) => this.searchItems(e.target.value.toLowerCase())}
@@ -75,11 +92,11 @@ class ProductsContainer extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: AppStateType) => {
     return {
         products: state.products,
         item: state.common.chosenItem
     }
 }
 
-export default connect(mapStateToProps, { getItems, createItem })(ProductsContainer);
+export default connect<Props, AppStateType>(mapStateToProps, { getItems, createItem })(ProductsContainer);

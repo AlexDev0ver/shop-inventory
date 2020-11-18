@@ -1,19 +1,24 @@
+// @flow
 import ACTION from '../action-enum';
 
-export function toggleItemsFakeFetching(payload) {
+import type { ActionType } from '../../types/ActionType';
+import type { ItemType } from '../../types/ItemType';
+import type { ThunkType } from '../../types/ThunkType';
+
+export function toggleItemsFakeFetching(payload: boolean): ActionType {
     return {type: ACTION.TOGGLE_ITEMS_FAKE_FETCHING, payload}
 };
 
-export function setItems(payload) {
+export function setItems(payload: Array<ItemType>): ActionType {
     return {type: ACTION.SET_ITEMS, payload}
 };
 
-export function updateLocalStorage (items) {
+export function updateLocalStorage (items: Array<ItemType>): void {
     localStorage.removeItem("items");
     localStorage.setItem("items", JSON.stringify(items));
 }
 
-export const getItems = () => async (dispatch, getState) => {
+export const getItems = (): ThunkType => async (dispatch, getState) => {
     if (!getState().products.items.length) dispatch(toggleItemsFakeFetching(true));
 
     if (localStorage.getItem("items") === null) {
@@ -22,10 +27,12 @@ export const getItems = () => async (dispatch, getState) => {
         return;
     }
 
+    const itemsLocalStorage = localStorage.getItem("items");
+
     setTimeout(() => {
-        if (localStorage.getItem("items").length) {
+        if (itemsLocalStorage && itemsLocalStorage.length) {
             dispatch(setItems(
-                JSON.parse(localStorage.getItem("items"))
+                JSON.parse(itemsLocalStorage)
             ));
         }
 
@@ -35,27 +42,27 @@ export const getItems = () => async (dispatch, getState) => {
 
 
 
-export const createItem = ({name, quantity, description = null}) => async(dispatch, getState) => {
+export const createItem = ({name, quantity, description = null}: ItemType): ThunkType => async(dispatch, getState) => {
     if (name === "" || quantity === 0) return;
 
-    const items = getState().products.items;
-    const updatedItems = [...items, {name: name, quantity: quantity, description: description, id: Math.floor(Math.random()*1000)} ];
+    const items: Array<ItemType> = getState().products.items;
+    const updatedItems: Array<ItemType> = [...items, {name: name, quantity: quantity, description: description, id:`${ Math.floor(Math.random()*1000)}`} ];
 
     dispatch(setItems(updatedItems));
     updateLocalStorage(updatedItems);
 }
 
-export const editItem = (updatedItem) => async(dispatch, getState) => {
-    const items = getState().products.items;
-    const updatedItems = items.map(i => i.id === updatedItem.id ? updatedItem : i);
+export const editItem = (updatedItem: ItemType): ThunkType => async(dispatch, getState) => {
+    const items: Array<ItemType> = getState().products.items;
+    const updatedItems: Array<ItemType> = items.map(i => i.id === updatedItem.id ? updatedItem : i);
 
     dispatch(setItems(updatedItems));
     updateLocalStorage(updatedItems);
 }
 
-export const deleteItem = (item) => async(dispatch, getState) => {
-    const items = getState().products.items;
-    const updatedItems = items.filter(i => i.id !== item.id);
+export const deleteItem = (item: ItemType): ThunkType => async(dispatch, getState) => {
+    const items: Array<ItemType> = getState().products.items;
+    const updatedItems: Array<ItemType> = items.filter(i => i.id !== item.id);
 
     dispatch(setItems(updatedItems));
     updateLocalStorage(updatedItems);

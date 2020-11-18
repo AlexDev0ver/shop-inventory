@@ -1,4 +1,7 @@
-export default function Footer () {
+// @flow
+import * as React from 'react';
+
+export default function Footer (): React.Element<any> {
     return (
         <footer className="container-fluid py-3"
                 style={{background: "linear-gradient(63deg, rgba(5,242,219,1) 0%, rgba(83,230,75,0.7483368347338936) 100%", flexBasis:"10vh"}}

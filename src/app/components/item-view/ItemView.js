@@ -14,7 +14,7 @@ class ItemView extends Component {
     editDescription() {
         const item = this.props.items.find(i => i.id === this.props.chosenItemId);
 
-        this.props.editItem({...item, description: this.state.description})
+        this.props.editItem({...item, description: this.state.description});
     }
 
     render() {
@@ -41,7 +41,7 @@ class ItemView extends Component {
                     </div>
                     <div className="d-flex justify-content-center">
                         <TextField onChange={(e) => this.setState({description:e.target.value})}
-                                   onKeyPress={(e) => {if (e.key === "Enter") e.target.blur() && this.editDescription() }}
+                                   onKeyPress={(e) => {if (e.key === "Enter") {this.editDescription(); e.target.blur()} }}
                                    defaultValue={item.description === null ? "" : item.description}
                                    id="outlined-textarea"
                                    placeholder={item.description === null ? "Type description here..." : item.description}
