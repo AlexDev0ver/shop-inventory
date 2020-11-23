@@ -23,11 +23,11 @@ function itemsFakeFetching(state: boolean = false, action: ActionType): boolean 
     }
 }
 
-export type CombinedReducer = {
+type CombinedReducer = {
     items: Array<ItemType>,
     itemsFakeFetching: boolean
 }
 
-export default combineReducers<CombinedReducer, ActionType>({
-    items, itemsFakeFetching
-})
+const itemsReducer: itemsReducer<CombinedReducer, ActionType> = combineReducers({ items, itemsFakeFetching })
+
+export default itemsReducer;

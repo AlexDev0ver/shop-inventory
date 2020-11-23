@@ -17,6 +17,6 @@ type CombinedReducer = {
     chosenItemId: string | null
 }
 
-export default combineReducers<CombinedReducer, ActionType>({
-    chosenItemId
-})
+const commonReducer: commonReducer<CombinedReducer, ActionType> = combineReducers({ chosenItemId })
+
+export default commonReducer;
