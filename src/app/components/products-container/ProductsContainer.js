@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import * as React from 'react';
 import { connect } from 'react-redux';
 
 import { Preloader, Oval } from 'react-preloader-icon';
@@ -9,22 +9,28 @@ import Modal from '../../utilities/Modal';
 import ListItem from './list-item/ListItem';
 
 import type { ProductsType } from '../../types/ProductsType';
-import type { ItemType } from '../../types/ItemType';
 import type { AppStateType } from '../../types/AppStateType';
+
+
+type DispatchProps = {
+    getItems: () => void,
+    createItem: () => void,
+    item: string | null,
+    products: ProductsType
+}
+
+type Props = DispatchProps
 
 type State = {
     searching: boolean,
     searchValue: string
 }
 
-type Props = {
-    getItems: () => void,
-    createItem: () => void,
-    itemsFakeFetching: boolean,
-    products: ProductsType
-}
+class ProductsContainer extends React.Component<Props, State> {
 
-class ProductsContainer extends Component<Props, State> {
+    constructor(props: Props) {
+        super(props)
+    }
 
     state = {
         searching: false,
@@ -99,4 +105,4 @@ const mapStateToProps = (state: AppStateType) => {
     }
 }
 
-export default connect<Props, AppStateType>(mapStateToProps, { getItems, createItem })(ProductsContainer);
+export default (connect(mapStateToProps, { getItems, createItem })(ProductsContainer): React.AbstractComponent<{}, State>);
