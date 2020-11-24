@@ -25,7 +25,7 @@ export default function Modal({setItem, editOrCreate, item}) {
   };
 
   const onSetItem = () => {
-      if (name === "" || quantity <= 0 ) return;
+      if (name === "" || quantity < 0 ) return;
 
       if (!item) {
           setItem({name: name, quantity: quantity});
@@ -56,6 +56,7 @@ export default function Modal({setItem, editOrCreate, item}) {
                     outline:"none"}}> <FontAwesomeIcon icon={faPlus}/>
             </button>
         }
+
         {editOrCreate === "edit" &&
             <button
                 onClick={handleClickOpen}
@@ -83,8 +84,7 @@ export default function Modal({setItem, editOrCreate, item}) {
                 </DialogContentText>
 
                 <TextField
-                    value={name}
-                    defaultValue={item && Object.keys(item).length ? item.name : name}
+                    defaultValue={item ? item.name : ""}
                     onChange={(e) => setName(e.target.value)}
                     color={name === "" ? "secondary" : "primary"}
                     autoFocus
@@ -96,8 +96,7 @@ export default function Modal({setItem, editOrCreate, item}) {
                     fullWidth
                 />
                 <TextField
-                    value={quantity}
-                    defaultValue={item && Object.keys(item).length ? item.quantity : quantity}
+                    defaultValue={item ? item.quantity : 0}
                     color={quantity <= 0 ? "secondary" : "primary"}
                     onChange={(e) => setQuantity(e.target.value)}
                     margin="dense"

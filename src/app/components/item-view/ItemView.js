@@ -1,18 +1,36 @@
-import React, { Component } from 'react';
+// @flow
+import * as React from 'react';
 import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
 import TextField from '@material-ui/core/TextField';
 
 import { editItem, deleteItem } from '../../redux/actions';
 
-class ItemView extends Component {
+import type { ItemType } from '../../types/ItemType';
+import type { AppStateType } from '../../types/AppStateType';
+
+type State = {
+    description: string | null
+}
+
+type Props = {
+    editItem: ItemType => void,
+    deleteItem: ItemType => void,
+    chosenItemId: string | null,
+    items: Array<ItemType>
+}
+
+class ItemView extends React.Component<Props, State> {
 
     state = {
         description: null
     }
 
     editDescription() {
-        const item = this.props.items.find(i => i.id === this.props.chosenItemId);
+        const { items } = this.props;
+
+        const item = items.find(i => i.id === this.props.chosenItemId);
+        if (item === undefined) return;
 
         this.props.editItem({...item, description: this.state.description});
     }
@@ -54,11 +72,11 @@ class ItemView extends Component {
     }
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state: AppStateType) => {
     return {
         chosenItemId: state.common.chosenItemId,
         items: state.products.items
     }
 }
 
-export default connect(mapStateToProps, { editItem, deleteItem })(ItemView);
+export default (connect(mapStateToProps, { editItem, deleteItem })(ItemView): React.AbstractComponent<{}, State>);
